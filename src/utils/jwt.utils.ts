@@ -1,0 +1,6 @@
+//import jwt from 'jsonwebtoken';
+
+//const privateKey = '';
+
+export const publicKey = 'AAAAB3NzaC1yc2EAAAADAQABAAABgQCoqx0x2iqRSjqPkYv8eChjD6pL3BiiY4WOc7S7HoY0/GcQVEOxFS6k/sfJQlzfu6at4WpKd0taeEha2QVBTDVFGNoSGtlKDeqXaQqdRwoXheOVAo5Dmz0LVgDbi2Tg3b2URlluv/3nc0BinC+P1bnTgqXVihcR2DcLllfO5lkvClMC/GhhWywpIumUkbOPgZqI1txAMt7RTIl+HSfcYNX7b/aZLuULtR5crMzI+xx3QkhEYLg4sRot0VcWQuKk7DfXak9U98K8nOlYUHw7L2A+9Qj4xvYPOW01DAb2k3WHK8p1Um3DK6R2I7/fhtt2hMZYqQX7hIDQBZGdzrNoRcKsMfpcYzZ/F5vZ71wLX8zvsd4V0/MLTKATuElCH9YCWdfwfK+F69M/XnVG9Y55/T9JG+BxlUg+TWZvvBqxY+Dh2S6/m+LZlIsiRoAr3vDDcRcaG9Yzw3YsQYJBeoJY+1ilsm7IJaXBoXgOvdNXrKhN/Ocam2ik5tJbsXCKZ8ec4ak= dgame@LAPTOP-D9Q8PAPN'
+

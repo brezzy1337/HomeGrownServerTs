@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @default(autoincrement()) @id
+  email String @unique
+  username String @unique
+  password String
+  location Location?
+  paymentMethods PaymentMethods?
+}
+
+model Location {
+  id Int @default(autoincrement()) @id
+  address String
+  state String
+  zip Int 
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+model PaymentMethods {
+  id Int @default(autoincrement()) @id
+  card Boolean @default(false)
+  paypal CustomerID?
+  cash Boolean @default(true)
+  Crypto Boolean @default(false)
+  user User @relation(fields:[userId], references: [id])
+  userId Int
+}
+
+model CustomerID {
+  id Int @default(autoincrement()) @id
+  CustomerId String @unique
+  paymentMethod PaymentMethods @relation(fields:[paymentMethodkey], references: [id])
+  paymentMethodkey Int
+  paymentMethodId PaymentMethodID?
+}
+
+model PaymentMethodID {
+  id Int @default(autoincrement()) @id
+  PaymentMethodId String @unique
+  customerId CustomerID @relation(fields: [customerKey], references: [id])
+  customerKey Int
+}
