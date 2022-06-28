@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -17,13 +17,19 @@ model User {
   password String
   location Location?
   paymentMethods PaymentMethods?
+  vegetables PostedVegetables[]
+  fruits PostedFruit[]
+  herbs PostedHerbs[]
 }
 
 model Location {
   id Int @default(autoincrement()) @id
   address String
+  city String
   state String
   zip Int 
+  longitude Float
+  latitude Float
   user User @relation(fields: [userId], references: [id])
   userId Int
 }
@@ -51,4 +57,32 @@ model PaymentMethodID {
   PaymentMethodId String @unique
   customerId CustomerID @relation(fields: [customerKey], references: [id])
   customerKey Int
+}
+
+model PostedVegetables {
+    id Int @default(autoincrement()) @id
+    Seller User @relation(fields:[userId], references: [id])
+    userId Int
+    name String
+    price Int
+    amount Int
+}
+
+model PostedFruit {
+  id Int @default(autoincrement()) @id
+    Seller User @relation(fields:[userId], references: [id])
+    userId Int
+    name String
+    price Float
+    amount Float
+}
+
+model PostedHerbs {
+    id Int @default(autoincrement()) @id
+    Seller User @relation(fields:[userId], references: [id])
+    userId Int
+    name String
+    price Int
+    amount Int
+    dried Boolean
 }
