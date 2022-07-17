@@ -20,6 +20,8 @@ model User {
   vegetables PostedVegetables[]
   fruits PostedFruit[]
   herbs PostedHerbs[]
+  sales Orders[] @relation("Seller")
+  orders Orders[] @relation("Buyer")
 }
 
 model Location {
@@ -31,7 +33,7 @@ model Location {
   longitude Float
   latitude Float
   user User @relation(fields: [userId], references: [id])
-  userId Int
+  userId Int @unique
 }
 
 model PaymentMethods {
@@ -41,14 +43,14 @@ model PaymentMethods {
   cash Boolean @default(true)
   Crypto Boolean @default(false)
   user User @relation(fields:[userId], references: [id])
-  userId Int
+  userId Int @unique
 }
 
 model CustomerID {
   id Int @default(autoincrement()) @id
   CustomerId String @unique
   paymentMethod PaymentMethods @relation(fields:[paymentMethodkey], references: [id])
-  paymentMethodkey Int
+  paymentMethodkey Int @unique
   paymentMethodId PaymentMethodID?
 }
 
@@ -56,7 +58,7 @@ model PaymentMethodID {
   id Int @default(autoincrement()) @id
   PaymentMethodId String @unique
   customerId CustomerID @relation(fields: [customerKey], references: [id])
-  customerKey Int
+  customerKey Int @unique
 }
 
 model PostedVegetables {
@@ -66,6 +68,10 @@ model PostedVegetables {
     name String
     price Int
     amount Int
+    // dateTransplanted DateTime
+    // // Run algroithom to determine estimated harvest date or have option to be set up user
+    // estimatedHarvestDate DateTime
+    // HarvestDate DateTime?
 }
 
 model PostedFruit {
@@ -75,6 +81,10 @@ model PostedFruit {
     name String
     price Float
     amount Float
+    // dateTransplanted DateTime
+    // // Run algroithom to determine estimated harvest date or have option to be set up user
+    // estimatedHarvestDate DateTime
+    // HarvestDate DateTime?
 }
 
 model PostedHerbs {
@@ -85,4 +95,20 @@ model PostedHerbs {
     price Int
     amount Int
     dried Boolean
+    // dateTransplanted DateTime
+    // // Run algroithom to determine estimated harvest date or have option to be set up user
+    // estimatedHarvestDate DateTime
+    // HarvestDate DateTime?
+}
+
+model Orders {
+  id Int @default(autoincrement()) @id
+  date String
+  status String
+  Buyer User @relation("Buyer", fields: [buyerId], references: [id])
+  Seller User @relation("Seller", fields: [sellerId], references: [id])
+  channelId String @unique
+  buyerId Int @unique
+  sellerId Int @unique
+  Items Json
 }

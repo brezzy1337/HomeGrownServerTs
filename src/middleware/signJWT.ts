@@ -16,7 +16,7 @@ const signJWT = (user: User, callback: (error: Error | null, token: string | nul
     var expirationTimeInSeconds = Math.floor(expirationTime / 1000);
 
     //Create Logging later
-    console.log(`Attempting to sing token for ${user.username}`);
+    console.log(`Attempting to sign token for ${user.username}`);
 
     try {
         jwt.sign(

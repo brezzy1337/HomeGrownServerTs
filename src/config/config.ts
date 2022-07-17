@@ -8,6 +8,9 @@ const SERVER_TOKEN_EXPIRETIME = process.env.SERVER_TOKEN_EXPIRETIME || 3600;
 const SERVER_TOKEN_ISSUER = process.env.SERVER_TOKEN_ISSUER || 'coolIssuer';
 const SERVER_TOKEN_SECRET = process.env.SERVER_TOKEN_SECRET || 'superencryptedsecret';
 
+const STREAMCHAT_API_KEY = process.env.STEAMCHAT_API_KEY
+const STREAMCHAT_API_SECRET = process.env.STREAMCHAT_API_SECRET
+
 const SERVER = {
     hostname: SERVER_HOSTNAME,
     port: SERVER_PORT,
@@ -18,8 +21,14 @@ const SERVER = {
     }
 };
 
+const STREAMCHAT = {
+    api_key: STREAMCHAT_API_KEY,
+    api_secret: STREAMCHAT_API_SECRET
+}
+
 const config = {
-    server: SERVER
+    server: SERVER,
+    StreamChat: STREAMCHAT
 }
 
 export default config;
