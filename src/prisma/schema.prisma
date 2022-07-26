@@ -110,5 +110,6 @@ model Orders {
   channelId String @unique
   buyerId Int @unique
   sellerId Int @unique
+  total Int 
   Items Json
 }

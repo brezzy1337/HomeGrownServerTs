@@ -368,7 +368,7 @@ router.get('/getHerbs', extractJWT, async (req: Request, res: Response, next: Ne
   });
 
   router.post('/postOrder', extractJWT, async (req: Request, res: Response, next: NextFunction) => {
-    const { sellerId, Items} = await req.body;
+    const { sellerId, Items, Total} = await req.body;
     // let ItemsJson: JSON = Items as Prisma.JsonArray;
     var Itemsjson = Items as Prisma.JsonArray
     let current = new Date();
@@ -420,7 +420,7 @@ router.get('/getHerbs', extractJWT, async (req: Request, res: Response, next: Ne
     ],
   },
   select: {
-    status: true
+    status: false ? undefined : true
   }
 })
       console.log(currentOrder); 
@@ -445,6 +445,7 @@ router.get('/getHerbs', extractJWT, async (req: Request, res: Response, next: Ne
             buyerId: id,
             sellerId: sellerId,
             channelId: channelId,
+            total: Total,
             Items: Itemsjson
           }
         });
