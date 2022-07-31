@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Router } from 'express';
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
-import {PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import signJWT from '../middleware/signJWT';
 import extractJWT from '@src/middleware/extractJWT';
 
