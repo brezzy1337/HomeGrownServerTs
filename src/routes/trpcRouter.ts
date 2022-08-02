@@ -2,8 +2,10 @@ import { t } from '../utils/trpc.utils/trcp';
 import { TRPCError } from '@trpc/server';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
+import { graphql } from 'graphql';
+import { GraphQLClient } from 'graphql-request';
 
-const usersRouters = t.router({
+const authRouters = t.router({
   register: t.procedure
     .input(
       z.object({
@@ -35,8 +37,12 @@ const usersRouters = t.router({
       ctx.signJWT(user, (error, token) => {
         if (error) {
           throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
+        } else if (token) {
+          return {
+            token,
+            message: 'Auth Successful',
+          };
         }
-        return { token };
       });
     }),
 
@@ -76,8 +82,29 @@ const usersRouters = t.router({
     }),
 });
 
+const userRequestRouter = t.router({
+  braintreeToken: t.procedure.query(async ({ctx}) => {
+    const endpoint = "https://payments.sandbox.braintree-api.com/graphql";
+
+    const graphQLClient = new GraphQLClient(endpoint, {
+      headers: {
+        "Content-Type": "application/json",
+        // Encoded Token should be called from server which is encoded in a jwt format for double the encrytion ;)
+        Authorization: `YjJndnlxMmJocHZqeTdtNjozMTAxY2QyMzBiNmI4OWYwMjM0MzAwMWU3NGU5MTM5ZQ==`,
+        "Braintree-Version": "2021-05-11",
+      },
+    })
+  })
+
+  const data: <string> = await graphQLClient.request(NEW_GET_CLIENT_TOKEN, variables);
+
+  console.log(JSON.stringify(data, undefined, 2));
+
+})
+
 const trcpRouter = t.router({
-  users: usersRouters,
+  auth: authRouters,
+  userRequests: 
 });
 
 export type TrcpRouter = typeof trcpRouter;
