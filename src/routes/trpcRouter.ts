@@ -2,8 +2,9 @@ import { t } from '../utils/trpc.utils/trcp';
 import { TRPCError } from '@trpc/server';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
-import { graphql } from 'graphql';
-import { GraphQLClient } from 'graphql-request';
+import { BraintreeGQLClient } from '@src/GraphQL/BraintreeGQLClient';
+import { NEW_GET_CLIENT_TOKEN } from '@src/GraphQL/BrainTreeQueries';
+import { VAULT_PAYMENT_MEHTOD } from '@src/GraphQL/BrainTreeQueries';
 
 const authRouters = t.router({
   register: t.procedure
@@ -82,29 +83,47 @@ const authRouters = t.router({
     }),
 });
 
-const userRequestRouter = t.router({
-  braintreeToken: t.procedure.query(async ({ctx}) => {
-    const endpoint = "https://payments.sandbox.braintree-api.com/graphql";
+const BrainTreeRouter = t.router({
+  getBrainTreeToken: t.procedure.mutation(async ({ ctx }) => {
+    ctx.extractJWT;
 
-    const graphQLClient = new GraphQLClient(endpoint, {
-      headers: {
-        "Content-Type": "application/json",
-        // Encoded Token should be called from server which is encoded in a jwt format for double the encrytion ;)
-        Authorization: `YjJndnlxMmJocHZqeTdtNjozMTAxY2QyMzBiNmI4OWYwMjM0MzAwMWU3NGU5MTM5ZQ==`,
-        "Braintree-Version": "2021-05-11",
+    const data = await BraintreeGQLClient.request(NEW_GET_CLIENT_TOKEN);
+
+    if (data === null || undefined || '') {
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'BrainTree not responding' });
+    } else {
+      console.log(JSON.stringify(data, undefined, 2));
+      return data;
+    }
+  }),
+  vaultPaymentMethod: t.procedure.input(
+    z.object({
+      nonce: z.string()
+    }),
+  ).mutation(async ({ctx, input}) => {
+    ctx.extractJWT;
+
+    const variables = {
+      input: {
+        paymentMethodID: input.nonce,
       },
-    })
-  })
+    };
 
-  const data: <string> = await graphQLClient.request(NEW_GET_CLIENT_TOKEN, variables);
-
-  console.log(JSON.stringify(data, undefined, 2));
-
-})
+    const data = await BraintreeGQLClient.request(VAULT_PAYMENT_MEHTOD, variables);
+    
+    if (data === null || undefined || '') {
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'BrainTree not responding' });
+    } else {
+      console.log(JSON.stringify(data, undefined, 2));
+      return data;
+    }
+    
+  }) 
+});
 
 const trcpRouter = t.router({
   auth: authRouters,
-  userRequests: 
+  braintree: BrainTreeRouter
 });
 
 export type TrcpRouter = typeof trcpRouter;

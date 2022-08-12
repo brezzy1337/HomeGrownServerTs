@@ -7,6 +7,7 @@ const SERVER_PORT = process.env.SERVER_PORT || 1337;
 const SERVER_TOKEN_EXPIRETIME = process.env.SERVER_TOKEN_EXPIRETIME || 3600;
 const SERVER_TOKEN_ISSUER = process.env.SERVER_TOKEN_ISSUER || 'coolIssuer';
 const SERVER_TOKEN_SECRET = process.env.SERVER_TOKEN_SECRET || 'superencryptedsecret';
+const BRAINTREE_ACCESS_TOKEN = process.env.BRIANTREE_ACCESS_TOKEN || `YjJndnlxMmJocHZqeTdtNjozMTAxY2QyMzBiNmI4OWYwMjM0MzAwMWU3NGU5MTM5ZQ==`
 
 const SERVER = {
     hostname: SERVER_HOSTNAME,
@@ -18,8 +19,13 @@ const SERVER = {
     }
 };
 
+const BRAINTREE = {
+    Token: BRAINTREE_ACCESS_TOKEN
+}
+
 const config = {
-    server: SERVER
+    server: SERVER,
+    braintree: BRAINTREE
 }
 
 export default config;
