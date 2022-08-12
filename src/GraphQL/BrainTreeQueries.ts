@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "graphql-request";
 
 export const NEW_GET_CLIENT_TOKEN = gql`
 mutation GetToken($tokenInput: CreateClientTokenInput) {
