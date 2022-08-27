@@ -3,13 +3,13 @@ import { Request, Response, NextFunction } from 'express';
 import { Router } from 'express';
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
-import { nanoid } from 'nanoid';
-import { Prisma, PrismaClient } from '@prisma/client';
+// import { nanoid } from 'nanoid';
+import { PrismaClient } from '@prisma/client';
 import signJWT from '../middleware/signJWT';
 import extractJWT from '@src/middleware/extractJWT';
-import { StreamChat } from 'stream-chat';
+// import { StreamChat } from 'stream-chat';
 // import { connect } from 'getstream';
-import config from "@src/config/config";
+// import config from "@src/config/config";
 
 const prisma = new PrismaClient({
   log: [
@@ -20,7 +20,7 @@ const prisma = new PrismaClient({
   ],
 });
 
-const serverClient = StreamChat.getInstance( config.StreamChat.api_key, config.StreamChat.api_secret );
+// const serverClient = StreamChat.getInstance( config.StreamChat.api_key, config.StreamChat.api_secret );
 
 const router = Router();
 
@@ -58,7 +58,7 @@ router.post('/register', async (req: Request, res: Response, next: NextFunction)
   // const chatClient = connect(config.StreamChat.api_key, config.StreamChat.api_secret, username);
   // const userId = user.id.toString();
   // const chatToken = chatClient.createUserToken(userId);  
-  const chatToken = serverClient.createToken(username);  
+  // const chatToken = serverClient.createToken(username);  
 
   signJWT(user, (error, token) => {
     if (error) {
@@ -70,7 +70,7 @@ router.post('/register', async (req: Request, res: Response, next: NextFunction)
       return res.status(200).json({
         message: 'Auth Successful',
         token,
-        chatToken,
+        // chatToken,
         username,
       });
     }
@@ -134,7 +134,7 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
     // const chatClient = connect(config.StreamChat.api_key, config.StreamChat.api_secret, username);
     // const userId = user.id.toString();
     // const chatToken = chatClient.createUserToken(userId);  
-    const chatToken = serverClient.createToken(username);  
+    // const chatToken = serverClient.createToken(username);  
 
     if (!user) res.json({ error: "User Doesn't Exist" });
 
@@ -152,7 +152,7 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
         return res.status(200).json({
           message: 'Auth Successful',
           token,
-          chatToken,
+          // chatToken,
           username,
         });
       }
@@ -367,134 +367,134 @@ router.get('/getHerbs', extractJWT, async (req: Request, res: Response, next: Ne
     console.log(postedHerbs);
   });
 
-  router.post('/postOrder', extractJWT, async (req: Request, res: Response, next: NextFunction) => {
-    const { sellerId, Items, Total} = await req.body;
-    // let ItemsJson: JSON = Items as Prisma.JsonArray;
-    var Itemsjson = Items as Prisma.JsonArray
-    let current = new Date();
-    const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
-    let id: number = res.locals.jwt.id;
-    let sellerName : string;
-    let buyerName : string;
-    let channelId : string = nanoid();
+//   router.post('/postOrder', extractJWT, async (req: Request, res: Response, next: NextFunction) => {
+//     const { sellerId, Items, Total} = await req.body;
+//     // let ItemsJson: JSON = Items as Prisma.JsonArray;
+//     var Itemsjson = Items as Prisma.JsonArray
+//     let current = new Date();
+//     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+//     let id: number = res.locals.jwt.id;
+//     let sellerName : string;
+//     let buyerName : string;
+//     let channelId : string = nanoid();
 
 
-    const findBuyerUsername = async() => {
-      const buyerUsername = await prisma.user.findUnique({
-          where: {
-            id: id,
-            },
-            select: {
-              username: true,
-            }
-          })
+//     const findBuyerUsername = async() => {
+//       const buyerUsername = await prisma.user.findUnique({
+//           where: {
+//             id: id,
+//             },
+//             select: {
+//               username: true,
+//             }
+//           })
 
-      console.log(buyerUsername);
-      buyerName = buyerUsername.username;
-    }   
+//       console.log(buyerUsername);
+//       buyerName = buyerUsername.username;
+//     }   
 
-    const findSellersUsername = async() => {
-      const sellerUsername = await prisma.user.findUnique({
-          where: {
-            id: sellerId,
-            },
-            select: {
-              username: true,
-            }
-          })
+//     const findSellersUsername = async() => {
+//       const sellerUsername = await prisma.user.findUnique({
+//           where: {
+//             id: sellerId,
+//             },
+//             select: {
+//               username: true,
+//             }
+//           })
 
-      console.log(sellerUsername);
-      sellerName = sellerUsername.username;
-    }   
+//       console.log(sellerUsername);
+//       sellerName = sellerUsername.username;
+//     }   
 
-    const handleOrder = async() => {
-      const currentOrder = await prisma.orders.findMany({
- where: {
-    AND: [
-      {
-        buyerId: id
-      },
-      {
-        sellerId: sellerId
-      },
-    ],
-  },
-  select: {
-    status: false ? undefined : true
-  }
-})
-      console.log(currentOrder); 
+//     const handleOrder = async() => {
+//       const currentOrder = await prisma.orders.findMany({
+//  where: {
+//     AND: [
+//       {
+//         buyerId: id
+//       },
+//       {
+//         sellerId: sellerId
+//       },
+//     ],
+//   },
+//   select: {
+//     status: false ? undefined : true
+//   }
+// })
+//       console.log(currentOrder); 
 
-      // if order complete dont make a new channel
-      // if I keep all order makes current order conditional return the last object in the array
-    if (currentOrder[0].status === 'Order Placed') {
-      return res.status(300).json({
-        message: 'Current Order not Complete Would you like to send a modification of the current order',
-      });
-        // if(modifyOrder = true) {}
-  }
+//       // if order complete dont make a new channel
+//       // if I keep all order makes current order conditional return the last object in the array
+//     if (currentOrder[0].status === 'Order Placed') {
+//       return res.status(300).json({
+//         message: 'Current Order not Complete Would you like to send a modification of the current order',
+//       });
+//         // if(modifyOrder = true) {}
+//   }
 
-    else {
+//     else {
 
-      try {
-        prisma.orders.create({
-          data: {
-            date: date,
-            // "2020-03-19T14:21:00+02:00"
-            status: 'Order Placed',
-            buyerId: id,
-            sellerId: sellerId,
-            channelId: channelId,
-            total: Total,
-            Items: Itemsjson
-          }
-        });
-        console.log('Order posted');
-      } catch (error) {
-        console.log('Database could not post order');
-        return res.status(500).json('Could not reach database');
-      } 
+//       try {
+//         prisma.orders.create({
+//           data: {
+//             date: date,
+//             // "2020-03-19T14:21:00+02:00"
+//             status: 'Order Placed',
+//             buyerId: id,
+//             sellerId: sellerId,
+//             channelId: channelId,
+//             total: Total,
+//             Items: Itemsjson
+//           }
+//         });
+//         console.log('Order posted');
+//       } catch (error) {
+//         console.log('Database could not post order');
+//         return res.status(500).json('Could not reach database');
+//       } 
 
-      try {
-        serverClient.upsertUsers([
-          { id: buyerName, role: 'user'},
-          { id: sellerName, role: 'user'}
-        ]);
-        console.log('Users Synced')
-      } catch (error) {
-        return res.status(500).json('Failed to sync user')
-      } 
+//       try {
+//         serverClient.upsertUsers([
+//           { id: buyerName, role: 'user'},
+//           { id: sellerName, role: 'user'}
+//         ]);
+//         console.log('Users Synced')
+//       } catch (error) {
+//         return res.status(500).json('Failed to sync user')
+//       } 
 
-      try {
-        const channel = serverClient.channel('messaging', {
-            members: [buyerName, sellerName],
-        });
-        await channel.create();
-        await channel.sendMessage({
-          user_id: buyerName,
-          text: `Hey! I would love to order these Items from you! ${Items}`,
-          customField: ''
-      });
-      console.log('channel created and order message sent');
-      } catch (error) {
-        return res.status(500).json('Could Not Create Channel or send message');
-      }
-    }
+//       try {
+//         const channel = serverClient.channel('messaging', {
+//             members: [buyerName, sellerName],
+//         });
+//         await channel.create();
+//         await channel.sendMessage({
+//           user_id: buyerName,
+//           text: `Hey! I would love to order these Items from you! ${Items}`,
+//           customField: ''
+//       });
+//       console.log('channel created and order message sent');
+//       } catch (error) {
+//         return res.status(500).json('Could Not Create Channel or send message');
+//       }
+//     }
 
-    // await handleOrder();
-    // Return a boolean true or false to see if a current or is already placed
-  }
+//     // await handleOrder();
+//     // Return a boolean true or false to see if a current or is already placed
+//   }
 
-  try{
-    await findBuyerUsername();
-    await findSellersUsername();
-  } catch (error) {
-    res.status(500).json('User cannot be found in database');
-  }
+//   try{
+//     await findBuyerUsername();
+//     await findSellersUsername();
+//   } catch (error) {
+//     res.status(500).json('User cannot be found in database');
+//   }
   
-  await handleOrder();
-  // res.json(handleOrder);
-  // Conditional Statement to see if there is another Order in place with the same buyer and seller that has a uncomplete order status
-});
+//   await handleOrder();
+//   // res.json(handleOrder);
+//   // Conditional Statement to see if there is another Order in place with the same buyer and seller that has a uncomplete order status
+// });
   
 export default router;
