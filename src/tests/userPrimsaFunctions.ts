@@ -1,33 +1,53 @@
-import { Context } from '../utils/prismaContext'
+//Tests if Prisma is create data on the database
+
+import { PrismaContext } from './MockContext'
 
 interface CreateUser {
-    id: Number
     email: string
     username: string
     password: string
   }
 
 interface AddLocation {
-    id: Number
+    userId: number
+    id: number
     address: string
+    city: string
     state: string
-    zip: Number
+    zip: number
+    longitude: number
+    latitude: number
   }
 
-export async function createUser(user: CreateUser, ctx: Context) {
+  interface AddPaymentMethod {
+    userId: number
+    id: number
+    card: boolean
+    cash: boolean
+    Crypto: boolean
+  }
+
+export async function createUser(user: CreateUser, ctx: PrismaContext) {
       return await ctx.prisma.user.create({
         data: user,
       })
   };
 
-  export async function addLocation(location: AddLocation, ctx: Context) {
+  
+  export async function addLocation(location: AddLocation, ctx: PrismaContext) {
     return await ctx.prisma.location.create({
       data: location,
     })
 };
 
-export async function LoginTest(user: CreateUser, ctx: Context) {
+export async function addPaymentMethod(paymentMethod: AddPaymentMethod, ctx: PrismaContext) {
+  return await ctx.prisma.paymentMethods.create({
+    data: paymentMethod
+  })
+}
+
+export async function LoginTest(user: CreateUser, ctx: PrismaContext) {
     return await ctx.prisma.user.create({
-      data:user,
+      data: user,
     })
 };

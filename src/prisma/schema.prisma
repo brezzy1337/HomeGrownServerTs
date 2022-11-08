@@ -31,7 +31,7 @@ model Location {
   longitude Float
   latitude Float
   user User @relation(fields: [userId], references: [id])
-  userId Int
+  userId Int @unique
 }
 
 model PaymentMethods {
@@ -41,14 +41,14 @@ model PaymentMethods {
   cash Boolean @default(true)
   Crypto Boolean @default(false)
   user User @relation(fields:[userId], references: [id])
-  userId Int
+  userId Int @unique
 }
 
 model CustomerID {
   id Int @default(autoincrement()) @id
   CustomerId String @unique
   paymentMethod PaymentMethods @relation(fields:[paymentMethodkey], references: [id])
-  paymentMethodkey Int
+  paymentMethodkey Int @unique
   paymentMethodId PaymentMethodID?
 }
 
@@ -56,7 +56,7 @@ model PaymentMethodID {
   id Int @default(autoincrement()) @id
   PaymentMethodId String @unique
   customerId CustomerID @relation(fields: [customerKey], references: [id])
-  customerKey Int
+  customerKey Int @unique
 }
 
 model PostedVegetables {

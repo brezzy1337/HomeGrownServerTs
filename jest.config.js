@@ -15,6 +15,8 @@ module.exports = {
     'src/(.*)': '<rootDir>/src/$1',
   },
   moduleDirectories: ['node_modules', 'src'],
+  forceExit: true,
+  verbose: true,
 };
 
 /*
@@ -22,10 +24,8 @@ module.exports = {
 /*
 module.exports = {
   preset: "ts-jest",
-  testEnvironment: "node",
   testMatch: ["**//*/*.test.ts"],
-  verbose: true,
-  forceExit: true,
+  testEnvironment: "node",
   clearMocks: true,
   resetMocks: true,
   restoreMocks: true,

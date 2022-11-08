@@ -8,6 +8,7 @@ import { VAULT_PAYMENT_MEHTOD } from '@src/GraphQL/BrainTreeQueries';
 
 const authRouters = t.router({
   register: t.procedure
+  .meta({ openapi: { method: 'POST', path: '/register'}})
     .input(
       z.object({
         email: z.string(),
@@ -31,7 +32,8 @@ const authRouters = t.router({
       } catch (error) {
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
       }
-      let user = await ctx.prisma.user.findUnique({
+      //revise type of any to optimal type
+      let user: any = await ctx.prisma.user.findUnique({
         where: { username: input.username },
         select: { id: true, email: true, username: true, password: true },
       });
@@ -48,6 +50,7 @@ const authRouters = t.router({
     }),
 
   login: t.procedure
+    .meta({ openapi: { method: 'POST', path: '/login', protect: true }})
     .input(
       z.object({
         username: z.string(),
@@ -84,7 +87,9 @@ const authRouters = t.router({
 });
 
 const BrainTreeRouter = t.router({
-  getBrainTreeToken: t.procedure.mutation(async ({ ctx }) => {
+  getBrainTreeToken: t.procedure
+  .meta({ openapi: { method: 'POST', path: '/BraintreePaypal'}})
+  .mutation(async ({ ctx }) => {
     ctx.extractJWT;
 
     const data = await BraintreeGQLClient.request(NEW_GET_CLIENT_TOKEN);
@@ -117,8 +122,7 @@ const BrainTreeRouter = t.router({
       console.log(JSON.stringify(data, undefined, 2));
       return data;
     }
-    
-  }) 
+  })
 });
 
 const trcpRouter = t.router({

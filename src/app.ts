@@ -1,4 +1,4 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import createServer from "./utils/server";
 import config from './config/config';
 
