@@ -16,6 +16,7 @@ const authRouters = t.router({
         password: z.string(),
       })
     )
+    .output(z.void())
     .mutation(async ({ ctx, input }) => {
       let hash = await bcrypt.hash(input.password, 10);
       if (hash === input.password) {
@@ -57,6 +58,7 @@ const authRouters = t.router({
         password: z.string(),
       })
     )
+    .output(z.void())
     .mutation(async ({ ctx, input }) => {
       let user = await ctx.prisma.user.findUnique({
         where: { username: input.username },
@@ -89,6 +91,8 @@ const authRouters = t.router({
 const BrainTreeRouter = t.router({
   getBrainTreeToken: t.procedure
   .meta({ openapi: { method: 'POST', path: '/BraintreePaypal'}})
+  .input(z.void())
+  .output(z.void())
   .mutation(async ({ ctx }) => {
     ctx.extractJWT;
 

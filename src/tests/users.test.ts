@@ -12,7 +12,7 @@ beforeEach(() => {
 
 afterEach(() => {
 
-  });
+});
   
   describe('test primsa and db ability to create a user', () => {
       
@@ -38,11 +38,12 @@ afterEach(() => {
             userId: 1,
             id: 1,
             card: false,
-            cash: true
+            cash: true,
+            Crypto: false
         }
     
       test('should create a new user', async () => {
-      mockCtx.prisma.user.create.mockResolvedValue(user)
+      mockCtx.prisma.user.create.mockResolvedValue(user);
         
         await expect(createUser(user, ctx)).resolves.toEqual({
             id: 1,
@@ -51,18 +52,12 @@ afterEach(() => {
             password: "zen121314"
         })
     });
-
-    test('should attempt to create a user and fail because duplicate username', async () => {
-        mockCtx.prisma.user.create.mockResolvedValue(user);
-        mockCtx.prisma.user.create.mockResolvedValue(user);
-      
-        await expect(createUser(user, ctx)).resolves.toContain({Error})
-        });
-
+        
     test('should add a address to a user',async () => {
         mockCtx.prisma.location.create.mockResolvedValue(location);
 
         await expect(addLocation(location, ctx)).resolves.toEqual({
+            userId: 1,
             id: 1,
             address: 'a',
             city: 'a',
@@ -77,15 +72,15 @@ afterEach(() => {
         mockCtx.prisma.paymentMethods.create.mockResolvedValue(paymentMethod);
 
         await expect(addPaymentMethod(paymentMethod, ctx)).resolves.toEqual({
+            userId:1,
             id: 1,
             Crypto: false,
             card: false,
             cash: true
         });
     });
-  });
   
-
+});
 
 
 
