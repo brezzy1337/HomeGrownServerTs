@@ -4,11 +4,11 @@ import config from "@src/config/config";
 const NAMESPACE = 'AUTH';
 
 interface User {
-    id: Number
-    email: string
-    username: string
-    password: string
-}
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+} 
 
 const signJWT = (user: User, callback: (error: Error | null, token: string | null) => void): void => {
     var timeSinchEpoch = new Date().getTime();

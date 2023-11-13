@@ -2,8 +2,12 @@ import express from "express";
 import cors = require('cors');
 import bodyParser = require('body-parser');
 import routes from './routes';
+import * as dotenv from 'dotenv'
 
 function createServer() {
+    
+    dotenv.config({path: `./.env.development`});
+
     const app = express();
 
     app.use(express.json());

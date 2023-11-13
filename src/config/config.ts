@@ -7,6 +7,7 @@ const SERVER_PORT = process.env.SERVER_PORT || 1337;
 const SERVER_TOKEN_EXPIRETIME = process.env.SERVER_TOKEN_EXPIRETIME || 3600;
 const SERVER_TOKEN_ISSUER = process.env.SERVER_TOKEN_ISSUER || 'coolIssuer';
 const SERVER_TOKEN_SECRET = process.env.SERVER_TOKEN_SECRET || 'superencryptedsecret';
+const BRAINTREE_ACCESS_TOKEN = process.env.BRIANTREE_ACCESS_TOKEN || `YjJndnlxMmJocHZqeTdtNjozMTAxY2QyMzBiNmI4OWYwMjM0MzAwMWU3NGU5MTM5ZQ==`
 
 const STREAMCHAT_API_KEY = process.env.STEAMCHAT_API_KEY
 const STREAMCHAT_API_SECRET = process.env.STREAMCHAT_API_SECRET
@@ -21,13 +22,19 @@ const SERVER = {
     }
 };
 
+
+const BRAINTREE = {
+    Token: BRAINTREE_ACCESS_TOKEN
+
 const STREAMCHAT = {
     api_key: STREAMCHAT_API_KEY,
     api_secret: STREAMCHAT_API_SECRET
+
 }
 
 const config = {
     server: SERVER,
+    braintree: BRAINTREE
     StreamChat: STREAMCHAT
 }
 

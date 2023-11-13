@@ -19,8 +19,6 @@ const extractJWT = ( req: Request, res: Response, next: NextFunction) => {
                 //In this case it saves the jwt token decoded and passes it to the next function
                 res.locals.jwt = decoded;
                 next();
-                
-
             }
         });
     } else {
