@@ -1,5 +1,5 @@
 import * as trpcExpress from '@trpc/server/adapters/express';
-import { inferAsyncReturnType } from '@trpc/server';
+//import { inferAsyncReturnType } from '@trpc/server';
 import { PrismaClient } from '@prisma/client';
 import extractJWT from '@src/middleware/extractJWT';
 import signJWT from '@src/middleware/signJWT';
@@ -9,13 +9,17 @@ const prisma = new PrismaClient({
     {
       emit: 'event',
       level: 'query',
-},
+    },
   ],
 });
 
-export const createContext = ({
+export type Context = {
+  extractJWT: typeof extractJWT,
+  signJWT: typeof signJWT,
+  prisma: PrismaClient,
+}
+
+export const createContext = async ({
   req,
   res,
-}: trpcExpress.CreateExpressContextOptions) => ({extractJWT, signJWT, prisma}); // no context
-
-export type Context = inferAsyncReturnType<typeof createContext>;
+}: trpcExpress.CreateExpressContextOptions): Promise<Context> => ({extractJWT, signJWT, prisma});

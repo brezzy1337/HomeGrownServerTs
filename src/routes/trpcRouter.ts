@@ -1,4 +1,4 @@
-import { t } from '../utils/trpc.utils/trcp';
+import { t } from '../utils/trpc.utils/trpc';
 import { TRPCError } from '@trpc/server';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
@@ -15,8 +15,7 @@ const authRouters = t.router({
         username: z.string(),
         password: z.string(),
       })
-    )
-    .output(z.void())
+    )    .output(z.void())
     .mutation(async ({ ctx, input }) => {
       let hash = await bcrypt.hash(input.password, 10);
       if (hash === input.password) {
@@ -38,7 +37,7 @@ const authRouters = t.router({
         where: { username: input.username },
         select: { id: true, email: true, username: true, password: true },
       });
-      ctx.signJWT(user, (error, token) => {
+      ctx.signJWT(user, (error: Error, token: any) => {
         if (error) {
           throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
         } else if (token) {
@@ -59,7 +58,7 @@ const authRouters = t.router({
       })
     )
     .output(z.void())
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ ctx, input }: { ctx: any, input: any }) => {
       let user = await ctx.prisma.user.findUnique({
         where: { username: input.username },
         select: { id: true, email: true, username: true, password: true },
@@ -75,7 +74,7 @@ const authRouters = t.router({
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Invalid Login'});
       };
 
-      ctx.signJWT(user, (error, token) => {
+      ctx.signJWT(user, (error: Error, token: any) => {
         if (error) {
           throw new TRPCError({ code: 'UNAUTHORIZED' });
         } else if (token) {

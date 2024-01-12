@@ -25,6 +25,7 @@ const SERVER = {
 
 const BRAINTREE = {
     Token: BRAINTREE_ACCESS_TOKEN
+}
 
 const STREAMCHAT = {
     api_key: STREAMCHAT_API_KEY,
@@ -34,7 +35,7 @@ const STREAMCHAT = {
 
 const config = {
     server: SERVER,
-    braintree: BRAINTREE
+    braintree: BRAINTREE,
     StreamChat: STREAMCHAT
 }
 

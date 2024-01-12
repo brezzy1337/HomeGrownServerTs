@@ -24,6 +24,13 @@ const prisma = new PrismaClient({
 
 const router = Router();
 
+type User = {
+  id: number;
+  email: string;
+  username: string;
+  password: string;
+};
+
 router.get('/auth', extractJWT, (req: Request, res: Response, next: NextFunction) => {
   console.log('Token validated, user authorized');
 
@@ -60,7 +67,7 @@ router.post('/register', async (req: Request, res: Response, next: NextFunction)
   // const chatToken = chatClient.createUserToken(userId);  
   // const chatToken = serverClient.createToken(username);  
 
-  signJWT(user, (error, token) => {
+  signJWT(user as User, (error, token) => {
     if (error) {
       return res.status(401).json({
         message: 'Unable Sign JWT',
@@ -136,13 +143,17 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
     // const chatToken = chatClient.createUserToken(userId);  
     // const chatToken = serverClient.createToken(username);  
 
-    if (!user) res.json({ error: "User Doesn't Exist" });
+    if (!user) {
+      return res.json({ error: "User Doesn't Exist" });
+    }
 
     let match = await bcrypt.compare(password, user.password);
 
-    if (!match) res.json({ error: 'Username Or Password Invalid' });
+    if (!match) {
+      return res.json({ error: 'Username Or Password Invalid' });
+    }
 
-    signJWT(user, (error, token) => {
+    signJWT(user as User, (error, token) => {
       if (error) {
         return res.status(401).json({
           message: 'Unable Sign JWT',

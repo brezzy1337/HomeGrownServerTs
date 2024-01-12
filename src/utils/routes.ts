@@ -23,7 +23,12 @@ function routes(app: Express) {
   
   app.use(
     '/api',
-    createOpenApiExpressMiddleware({ router: trcpRouter, createContext })
+    createOpenApiExpressMiddleware({
+      router: trcpRouter, createContext,
+      responseMeta: undefined,
+      onError: undefined,
+      maxBodySize: undefined
+    })
   ) 
 };
 
