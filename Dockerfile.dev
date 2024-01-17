@@ -10,10 +10,6 @@ USER dev
 
 COPY package*.json ./
 
-ENV npm_config_build_from_source=true
-
-RUN npm ci
-
 COPY . .
 
 ENV PORT=8080
