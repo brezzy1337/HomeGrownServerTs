@@ -33,3 +33,15 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: "devin.phat97@gmail.com"
       PGADMIN_DEFAULT_PASSWORD : 121314
+
+#Here are the steps to connect to your PostgreSQL database from pgAdmin:
+
+# Start your services with docker-compose up.
+# Open a web browser and navigate to http://localhost:5845 (or whatever host and port you've mapped to pgAdmin in your docker-compose file).
+# Log in to pgAdmin with the email and password you've specified in the PGADMIN_DEFAULT_EMAIL and PGADMIN_DEFAULT_PASSWORD environment variables.
+# Right-click on "Servers" in the left-hand tree, and select "Create > Server...".
+# In the "Create - Server" dialog, enter any name for the server.
+# Switch to the "Connection" tab.
+# In the "Hostname/address" field, enter postgres.
+# In the "Username" and "Password" fields, enter the credentials you've specified in the POSTGRES_USER and POSTGRES_PASSWORD environment variables.
+# Click "Save".
