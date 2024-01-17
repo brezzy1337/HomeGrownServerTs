@@ -17,6 +17,15 @@ services:
       POSTGRES_PASSWORD: 121314
       POSTGRES_DB: homegrownprismadb
 
+  #Allows for default user to create databases (Primsa Migration Requirement)    
+  postgres-setup:
+    image: postgres:16.1-alpine3.19
+      depends_on:
+        - postgres
+      command: >
+        bash -c "
+          psql -h db -U postgres -c 'ALTER USER postgres CREATEDB;'"
+
   pgadmin:
     image: dpage/pgadmin4:latest
     ports:
