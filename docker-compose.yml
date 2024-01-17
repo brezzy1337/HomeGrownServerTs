@@ -8,13 +8,13 @@ services:
       - "3000:3000"
 
   postgres:
-    image: postgres:latest
+    image: postgres:16.1-alpine3.19
     restart: always
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: 121314
       POSTGRES_DB: homegrownprismadb
 
   pgadmin:
@@ -22,5 +22,5 @@ services:
     ports:
       - "5845:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: "${POSTGRES_USER}@test.com"
-      PGADMIN_DEFAULT_PASSWORD : $POSTGRES_PASSWORD 
+      PGADMIN_DEFAULT_EMAIL: "devin.phat97@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD : 121314
