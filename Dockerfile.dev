@@ -4,6 +4,8 @@ RUN addgroup dev && adduser -S -G dev dev && apk add --no-cache make gcc g++ pyt
 
 WORKDIR /app
 
+RUN chown dev:dev /app
+
 USER dev
 
 COPY package*.json ./
