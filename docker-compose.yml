@@ -18,7 +18,7 @@ services:
       POSTGRES_DB: homegrownprismadb
 
   #Allows for default user to create databases (Primsa Migration Requirement)    
-    postgres-setup:
+  postgres-setup:
     image: postgres:16.1-alpine3.19
     depends_on:
       - postgres
