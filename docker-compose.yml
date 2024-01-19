@@ -23,7 +23,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:latest
-    ports:
+    ports:y
       - "5845:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: "devin.phat97@gmail.com"
