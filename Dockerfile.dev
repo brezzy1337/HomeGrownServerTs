@@ -16,7 +16,7 @@ USER dev
 
 COPY package*.json ./
 
-RUN sudo chown dev:dev package-lock.json
+RUN sudo chown -R ${whoami} package-lock.json
 
 RUN npm i --build-from-source && npm ci
 
