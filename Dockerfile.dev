@@ -12,15 +12,13 @@ WORKDIR /app
 
 RUN sudo chown dev:dev /app
 
-USER dev
-
 COPY package*.json ./
-
-RUN sudo chown -R ${whoami} package-lock.json
 
 RUN npm i --build-from-source && npm ci
 
 COPY . .
+
+USER dev
 
 ENV PORT=8080
 
