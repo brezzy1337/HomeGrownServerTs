@@ -14,7 +14,7 @@ USER dev
 
 COPY package*.json ./
 
-RUN npm install bcrypt && npm ci
+RUN npm i node-pre-gyp && npm ci
 
 COPY . .
 
