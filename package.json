@@ -21,7 +21,6 @@
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@trpc/server": "^10.45.0",
-    "@types/axios": "^0.14.0",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
