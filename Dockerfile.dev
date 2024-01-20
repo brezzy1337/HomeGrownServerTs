@@ -24,5 +24,5 @@ ENV PORT=8080
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "until nc -z postgres 5432; do sleep 1; done; npm run prisma generate && npm run prisma migrate && npm run start:dev" ]
+CMD ["sh", "-c", "until nc -z postgres 5432", "do sleep 1", "done", "npm run prisma generate", "npm run prisma migrate", "npm run start:dev" ]
 
