@@ -4,8 +4,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev 
+    env_file:
+     - .env
     ports:
       - "3000:3000"
+    depends_on:
+      - postgres
+      condition: service_healthy
 
   postgres:
     image: postgres:16.1-alpine3.19
@@ -13,9 +18,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 121314
-      POSTGRES_DB: homegrownprismadb
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     command: >
       bash -c "
         while ! pg_isready -U postgres; do sleep 1; done;
@@ -31,8 +36,8 @@ services:
     ports:y
       - "5845:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: "devin.phat97@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD : 121314
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD : ${PGADMIN_PASSWORD}
 
 #Here are the steps to connect to your PostgreSQL database from pgAdmin:
 
