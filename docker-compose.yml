@@ -31,8 +31,7 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -42,8 +41,8 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
       PGADMIN_DEFAULT_PASSWORD : ${PGADMIN_PASSWORD}
     depends_on: 
-      postgres:
-        condition: service_healthy
+      - postgres
+        
 
 #Here are the steps to connect to your PostgreSQL database from pgAdmin:
 
