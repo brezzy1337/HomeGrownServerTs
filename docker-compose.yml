@@ -1,55 +1,57 @@
-version: "3.8"
-services: 
+version: '3.8'
+services:
   server:
     build:
       context: .
-      dockerfile: Dockerfile.dev 
+      dockerfile: Dockerfile.dev
     container_name: homegrown-server
     env_file:
-     - .env
+      - .env
     ports:
-      - "3000:3000"
+      - '3000:3000'
     depends_on:
       - postgres
     command: ./wait-for postgres:5432 && npm run prisma migrate && npm run dev
 
   postgres:
-    image: postgres:16.1-alpine3.19
+    image: 'postgres:16.1-alpine3.19'
     restart: always
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    # volumes: 
+    # volumes:
     #   - postgres-data:/var/lib/postgresql/data
     command: psql -U postgres -c 'ALTER USER postgres CREATEDB;'
-#bash -c "
-# while ! pg_isready -U postgres; do sleep 1; done;
+    #bash -c "
+    # while ! pg_isready -U postgres; do sleep 1; done;
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      homegrown-network:
+        ipv4_address: 192.168.92.21
 
   pgadmin:
-    image: dpage/pgadmin4:latest
+    image: 'dpage/pgadmin4:latest'
     ports:
-      - "5845:80"
+      - '5845:80'
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD : ${PGADMIN_DEFAULT_PASSWORD}
-    depends_on: 
-      - postgres
-  network:
-    homegrown-network:
-      ipam:
-        driver: default
-        config:
-          - subnet:
-    
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    depends_on:
+      - 'postgres'
 
+networks:
+  homegrown-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: '192.168.92.0\24'
 #Here are the steps to connect to your PostgreSQL database from pgAdmin:
 
 # Start your services with docker-compose up.
@@ -60,3 +62,4 @@ services:
 # Switch to the "Connection" tab.
 # In the "Username" and "Password" fields, enter the credentials you've specified in the POSTGRES_USER and POSTGRES_PASSWORD environment variables.
 # Click "Save".
+
