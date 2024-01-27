@@ -34,7 +34,7 @@ services:
       retries: 5
     networks:
       homegrown-network:
-        ipv4_address: 192.168.92.21
+        ipv4_address: 192.168.0.21
 
   pgadmin:
     image: 'dpage/pgadmin4:latest'
@@ -52,7 +52,6 @@ networks:
       driver: default
       config:
         - subnet: '192.168.0.0/24'
-          gateway: '192.168.0.1'
 #Here are the steps to connect to your PostgreSQL database from pgAdmin:
 
 # Start your services with docker-compose up.
