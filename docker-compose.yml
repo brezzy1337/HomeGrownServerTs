@@ -51,9 +51,8 @@ networks:
     ipam:
       driver: default
       config:
-         - subnet: "192.168.0.0/24"
-            gateway: "192.168.0.1"
-            
+        - subnet: '192.168.0.0/24'
+          gateway: '192.168.0.1'
 #Here are the steps to connect to your PostgreSQL database from pgAdmin:
 
 # Start your services with docker-compose up.
