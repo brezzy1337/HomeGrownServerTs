@@ -6,23 +6,24 @@ services:
       dockerfile: Dockerfile.dev
     container_name: homegrown-server
     env_file:
-      - .env
+    - .env
     ports:
-      - '3000:3000'
+    - '3000:3000'
     depends_on:
       postgres:
         condition: service_healthy
-    # command: ./wait-for postgres:5432 && npm run prisma migrate && npm run dev
+        # command: ./wait-for postgres:5432 && npm run prisma migrate && npm run dev
 
   postgres:
     image: 'postgres:16.1-alpine3.19'
     restart: always
     ports:
-      - '5432:5432'
+    - '5432:5432'
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+      volumes:
       - postgres:/var/lib/postgresql/data
     command: psql -U postgres -c 'ALTER USER postgres CREATEDB;'
     #bash -c "
@@ -39,7 +40,7 @@ services:
   pgadmin:
     image: 'dpage/pgadmin4:latest'
     ports:
-      - '5845:80'
+    - '5845:80'
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
@@ -47,13 +48,17 @@ services:
       postgres:
         condition: service_healthy
 
+volumes:
+  postgres:
+    driver: local
+
 networks:
   homegrown-network:
     ipam:
       driver: default
       config:
-        - subnet: '192.168.0.0/24'
-#Here are the steps to connect to your PostgreSQL database from pgAdmin:
+      - subnet: '192.168.0.0/24'
+        #Here are the steps to connect to your PostgreSQL database from pgAdmin:
 
 # Start your services with docker-compose up.
 # Open a web browser and navigate to http://localhost:5845 (or whatever host and port you've mapped to pgAdmin in your docker-compose file).
@@ -63,4 +68,3 @@ networks:
 # Switch to the "Connection" tab.
 # In the "Username" and "Password" fields, enter the credentials you've specified in the POSTGRES_USER and POSTGRES_PASSWORD environment variables.
 # Click "Save".
-
