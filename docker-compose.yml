@@ -9,8 +9,8 @@ services:
       - .env
     ports:
       - '3000:3000'
-    depends_on:
-      - postgres
+    # depends_on:
+    #   # - postgres
     command: ./wait-for postgres:5432 && npm run prisma migrate && npm run dev
 
   postgres:
