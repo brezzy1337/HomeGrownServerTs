@@ -10,8 +10,9 @@ services:
     ports:
     - '3000:3000'
     depends_on:
-    - postgres
-    # command: ./wait-for postgres:5432 && npm run prisma migrate && npm run dev
+      postgres:
+        condition: service_healthy
+        # command: ./wait-for postgres:5432 && npm run prisma migrate && npm run dev
 
   postgres:
     image: 'postgres:16.1-alpine3.19'
@@ -45,7 +46,11 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     depends_on:
-    - postgres
+      postgres:
+        condition: service_healthy
+    networks:
+      homegrown-network:
+      # ipv4_address: 192.168.0.22
 
 volumes:
   postgres:
