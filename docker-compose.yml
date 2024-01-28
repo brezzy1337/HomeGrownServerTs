@@ -28,8 +28,8 @@ services:
     # - postgres: /var/lib/postgresql/data
     #bash -c "
     # while ! pg_isready -U postgres; do sleep 1; done;
-    command: sudo chown ${POSTGRES_USER} -R /var/run/postgresql
-    command: psql -U ${POSTGRES_USER} -c 'ALTER USER postgres CREATEDB;'
+    command: >
+      /bin/sh -c " psql -U $$POSTGRES_USER -c 'ALTER USER postgres CREATEDB;' && sudo chown $$POSTGRES_USER -R /var/run/postgresql "
     healthcheck:
       test: ['CMD', 'pg_isready', '-d', '${POSTGRES_DB}', -U', '${POSTGRES_USER}', '-p', '5432']
       interval: 1s
