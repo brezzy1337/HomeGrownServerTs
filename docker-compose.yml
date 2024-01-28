@@ -13,6 +13,11 @@ services:
       postgres:
         condition: service_healthy
         # command: ./wait-for postgres:5432 && npm run prisma migrate && npm run dev
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:3000"]
+        interval: 1s
+        timeout: 5s
+        retries: 10
 
   postgres:
     image: 'postgres:16.1-alpine3.19'
@@ -23,8 +28,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      # POSTGRES_PASSWORD: password
-    # POSTGRES_DB: ${POSTGRES_DB}
+    POSTGRES_DB: ${POSTGRES_DB}
     # volumes:
     # - postgres: /var/lib/postgresql/data
     #bash -c "
