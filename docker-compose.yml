@@ -10,7 +10,7 @@ services:
     ports:
     - '3000:3000'
     depends_on:
-      postgres:
+      - postgres 
         command: ./wait-for postgres:5432 && npm run prisma migrate && npm run dev
 
   postgres:
@@ -45,7 +45,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     depends_on:
-      postgres:
+      - postgres 
 
 volumes:
   postgres:
