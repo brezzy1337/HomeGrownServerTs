@@ -14,7 +14,7 @@ services:
         condition: service_healthy
         # command: ./wait-for postgres:5432 && npm run prisma migrate && npm run dev
       healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:3000"]
+        test: ["CMD", "ping", "-c", "1", "postgres"]
         interval: 1s
         timeout: 5s
         retries: 10
@@ -29,8 +29,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     POSTGRES_DB: ${POSTGRES_DB}
-    # volumes:
-    # - postgres: /var/lib/postgresql/data
+    volumes:
+    - postgres: /var/lib/postgresql/data
     #bash -c "
     # while ! pg_isready -U postgres; do sleep 1; done;
     healthcheck:
@@ -61,7 +61,7 @@ services:
         condition: service_healthy
     networks:
       homegrown-network:
-      # ipv4_address: 192.168.0.22
+      ipv4_address: 192.168.0.22
 
 volumes:
   postgres:
