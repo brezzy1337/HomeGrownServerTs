@@ -29,7 +29,7 @@ services:
     #bash -c "
     # while ! pg_isready -U postgres; do sleep 1; done;
     healthcheck:
-      test: ['CMD', 'pg_isready', '-d', '${POSTGRES_DB}', -U', '${POSTGRES_USER}']
+      test: ['CMD', 'pg_isready', '-d', '${POSTGRES_DB}', -U', '${POSTGRES_USER}', '-p', '5432']
       interval: 1s
       timeout: 5s
       retries: 10
