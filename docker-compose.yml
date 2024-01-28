@@ -14,7 +14,7 @@ services:
         condition: service_healthy
         # command: ./wait-for postgres:5432 && npm run prisma migrate && npm run dev
       healthcheck:
-        test: ["CMD", "ping", "-c", "1", "postgres"]
+        test: ["CMD-SHELL", "ping", "192.168.0.21"]
         interval: 1s
         timeout: 5s
         retries: 10
