@@ -11,28 +11,28 @@ services:
     - '3000:3000'
     depends_on:
       postgres:
-        condition: service_healthy
-        # command: ./wait-for postgres:5432 && npm run prisma migrate && npm run dev
+        command: ./wait-for postgres:5432 && npm run prisma migrate && npm run dev
 
   postgres:
     image: 'postgres:16.1-alpine3.19'
     restart: always
     ports:
     - '5432:5432'
+    user: ${POSTGRES_USER}
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-      volumes:
-      - postgres: /var/lib/postgresql/data
-    command: psql -U postgres -c 'ALTER USER postgres CREATEDB;'
+      # volumes:
+    # - postgres: /var/lib/postgresql/data
     #bash -c "
     # while ! pg_isready -U postgres; do sleep 1; done;
     healthcheck:
-      test: ['CMD', 'pg_isready', '-U', 'postgres']
+      test: ['CMD', 'pg_isready', '-d', '${POSTGRES_DB}', -U', '${POSTGRES_USER}']
       interval: 1s
       timeout: 5s
       retries: 10
+    command: psql -U ${POSTGRES_USER} -c 'ALTER USER postgres CREATEDB;'
     networks:
       homegrown-network:
         ipv4_address: 192.168.0.21
@@ -46,7 +46,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     depends_on:
       postgres:
-        condition: service_healthy
 
 volumes:
   postgres:
