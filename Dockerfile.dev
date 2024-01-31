@@ -12,7 +12,9 @@ WORKDIR /app
 
 RUN sudo chown dev:dev /app
 
-COPY package*.json ./
+COPY package*.json package-lock.json ./
+
+COPY prisma ./prisma/
 
 RUN npm i --build-from-source && npm ci
 
@@ -26,5 +28,5 @@ EXPOSE 8080
 
 #CMD ["sh", "-c", "until nc -z postgres 5432", "do sleep 1", "done", "npm run prisma generate", "npm run prisma migrate", "npm run start:dev" ]
 
-CMD ["sh", "-c", "npm run prisma generate", "npm run prisma migrate", "npm run start:dev" ]
+# CMD ["sh", "-c", "npm run prisma generate", "npm run prisma migrate", "npm run start:dev" ]
 
