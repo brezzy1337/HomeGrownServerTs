@@ -14,7 +14,7 @@ RUN sudo chown dev:dev /app
 
 COPY package*.json package-lock.json ./
 
-COPY prisma ./prisma/
+COPY prisma ./
 
 RUN npm i --build-from-source && npm ci
 
