@@ -18,7 +18,7 @@ COPY prisma ./prisma/
 
 RUN npm i --build-from-source && npm ci
 
-COPY . --exclude node_modules/* /app/
+COPY . .
 
 USER dev
 
