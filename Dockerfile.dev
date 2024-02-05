@@ -14,11 +14,11 @@ RUN sudo chown dev:dev /app
 
 COPY package*.json package-lock.json ./
 
-COPY prisma ./
+COPY prisma ./prisma/
 
 RUN npm i --build-from-source && npm ci
 
-COPY . .
+COPY . --exclude node_modules|* /app/
 
 USER dev
 
