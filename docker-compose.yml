@@ -17,7 +17,7 @@ services:
       interval: 1s
       timeout: 5s
       retries: 10
-    command: npm run prisma migrate && npm run start:dev
+    command: "npm run prisma migrate && npm run start:dev"
     networks:
       homegrown-network:
         ipv4_address: 192.168.0.20
