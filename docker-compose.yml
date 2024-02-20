@@ -26,7 +26,7 @@ services:
     image: 'postgres:16.1-alpine3.19'
     restart: always
     ports:
-    - '5432:5432'
+    - '5434:5432'
     # user: ${POSTGRES_USER}
     environment:
       # POSTGRES_USER: ${POSTGRES_USER}
