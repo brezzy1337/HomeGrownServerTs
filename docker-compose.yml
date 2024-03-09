@@ -13,14 +13,14 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "ping", "192.168.0.21"]
+      test: ["CMD-SHELL", "ping", "postgres"]
       interval: 1s
       timeout: 5s
       retries: 10
     command: "npm run prisma migrate dev && npm run start:dev"
     networks:
-      homegrown-network:
-        ipv4_address: 192.168.0.20
+      - homegrown-network
+      # ipv4_address: 192.168.1.28
 
   postgres:
     image: 'postgres:16.1-alpine3.19'
@@ -44,6 +44,7 @@ services:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 1s
       timeout: 5s
+
       retries: 10
     # command: >
     #   /bin/sh -c "
@@ -52,8 +53,8 @@ services:
     #   sudo chown $$POSTGRES_USER -R /var/run/postgresql
     #   "
     networks:
-      homegrown-network:
-        ipv4_address: 192.168.0.21
+      - homegrown-network
+      # ipv4_address: 192.168.0.21
 
   pgadmin:
     image: 'dpage/pgadmin4:latest'
@@ -66,8 +67,8 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      homegrown-network:
-        ipv4_address: 192.168.0.22
+      - homegrown-network
+      # ipv4_address: 192.168.0.22
 
 volumes:
   postgres:
@@ -78,7 +79,7 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: '192.168.0.0/24'
+      - subnet: '192.168.1.0/24'
         #Here are the steps to connect to your PostgreSQL database from pgAdmin:
 
 # Start your services with docker-compose up.

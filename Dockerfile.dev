@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y build-essential python3-distutils git a
 
 WORKDIR /app
 
-    RUN sudo chown dev:dev /app
+RUN sudo chown dev:dev /app
 
 COPY package.json package-lock.json ./
 
