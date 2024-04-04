@@ -10,7 +10,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y build-essential p
 
 WORKDIR /app    
 
-RUN sudo chown dev:dev /app
+RUN sudo chown dev:dev /app && ls -ld /app
 
 COPY package.json package-lock.json ./
 
@@ -19,7 +19,9 @@ COPY package.json package-lock.json ./
 # Install dependencies and set ownership of node_modules directory
 RUN npm i --build-from-source && \
     npm ci && \
-    chown -R dev:dev /app/node_modules
+    chown -R dev:dev /app/node_modules && \
+    ls -ld /app/node_modules && \
+    stat -c "%a %U:%G" /app/node_modules
 
 # Copy the remaining application files
 COPY . .
