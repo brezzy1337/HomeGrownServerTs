@@ -8,7 +8,7 @@ RUN addgroup dev && adduser --uid 1001 --ingroup dev --shell /bin/bash --disable
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y build-essential python3-distutils git apt-utils openssl sudo
 
-WORKDIR /app
+WORKDIR /app    
 
 RUN sudo chown dev:dev /app
 
@@ -16,10 +16,15 @@ COPY package.json package-lock.json ./
 
 # COPY prisma ./prisma/
 
-RUN npm i --build-from-source && npm ci
+# Install dependencies and set ownership of node_modules directory
+RUN npm i --build-from-source && \
+    npm ci && \
+    chown -R dev:dev /app/node_modules
 
+# Copy the remaining application files
 COPY . .
 
+# Switch to the dev user
 USER dev
 
 ENV PORT=8080
