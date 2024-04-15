@@ -132,6 +132,22 @@ services:
     ## enable next line if not using nginx
     restart: always
 
+  # nginx
+  nginx:
+    container_name: nginx_guacamole_compose
+    restart: always
+    image: nginx
+    volumes:
+    - ./nginx/templates:/etc/nginx/templates:ro
+    - ./nginx/ssl/self.cert:/etc/nginx/ssl/self.cert:ro
+    - ./nginx/ssl/self-ssl.key:/etc/nginx/ssl/self-ssl.key:ro
+    ports:
+    - 8443:443
+    links:
+    - guacamole
+    networks:
+      homegrown-network:
+
 volumes:
   postgres:
     driver: local
