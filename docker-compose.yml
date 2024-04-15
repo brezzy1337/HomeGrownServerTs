@@ -37,7 +37,7 @@ services:
       POSTGRES_DB: 'homegrownprismadb'
     volumes:
     - postgres:/var/lib/postgresql/data
-    #bash -c "
+    # bash -c "
     # while ! pg_isready -U postgres; do sleep 1; done;
     healthcheck:
       # test: ['CMD', 'pg_isready', '-d', '${POSTGRES_DB}', -U', '${POSTGRES_USER}', '-p', '5432']
@@ -81,7 +81,6 @@ services:
   # In the "Username" and "Password" fields, enter the credentials you've specified in the POSTGRES_USER and POSTGRES_PASSWORD environment variables.
   # Click "Save".
 
-
   # guacd
   guacd:
     container_name: guacd_compose
@@ -94,7 +93,7 @@ services:
     - ./record:/record:rw
 
     # postgres_guac
-    postgres_guac:
+  postgres_guac:
     container_name: postgres_guacamole_compose
     environment:
       PGDATA: /var/lib/postgresql/data/guacamole
@@ -103,7 +102,7 @@ services:
       POSTGRES_USER: guacamole_user
     image: postgres
     networks:
-      guacnetwork_compose:
+      homegrown-network:
     restart: always
     volumes:
     - ./init:/docker-entrypoint-initdb.d:ro
@@ -132,8 +131,6 @@ services:
     - 8080/tcp
     ## enable next line if not using nginx
     restart: always
-
-
 
 volumes:
   postgres:
