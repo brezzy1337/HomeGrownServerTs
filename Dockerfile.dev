@@ -21,7 +21,7 @@ RUN npm i --build-from-source && \
     npm ci && \
     chown -R dev:dev /app/node_modules && \
     ls -ld /app/node_modules && \
-    stat -c "%a %U:%G" /app/node_modules
+    stat -c "%a %U:%G" /app/node_modules && \
 
 # Copy the remaining application files
 COPY . .
