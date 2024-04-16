@@ -138,9 +138,9 @@ services:
     restart: always
     image: nginx
     volumes:
-    - ./nginx/templates:/etc/nginx/templates:ro
-    - ./nginx/ssl/self.cert:/etc/nginx/ssl/self.cert:ro
-    - ./nginx/ssl/self-ssl.key:/etc/nginx/ssl/self-ssl.key:ro
+    - .utils/dev-ops/nginx/templates:/etc/nginx/templates:ro
+    - .utils/dev-ops/nginx/ssl/self.cert:/etc/nginx/ssl/self.cert:ro
+    - .utils/dev-ops/nginx/ssl/self-ssl.key:/etc/nginx/ssl/self-ssl.key:ro
     ports:
     - 8443:443
     links:
