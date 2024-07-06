@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["debian-openssl-1.1.x"]
 }
 
 datasource db {
@@ -11,106 +10,118 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model User {
-  id Int @default(autoincrement()) @id
-  email String @unique
-  username String @unique
-  password String
-  location Location?
+  id            Int           @default(autoincrement()) @id
+  email         String        @unique
+  username      String        @unique
+  password      String
   paymentMethods PaymentMethods?
-  vegetables PostedVegetables[]
-  fruits PostedFruit[]
-  herbs PostedHerbs[]
-  sales Orders[] @relation("Seller")
-  orders Orders[] @relation("Buyer")
+  stores        Store[]
+  sales         Sales[]       @relation("Seller")
+  orders        Orders[]      @relation("Buyer")
 }
 
 model Location {
-  id Int @default(autoincrement()) @id
-  address String
-  city String
-  state String
-  zip Int 
+  id        Int     @default(autoincrement()) @id
+  address   String
+  city      String
+  state     String
+  zip       Int
   longitude Float
-  latitude Float
-  user User @relation(fields: [userId], references: [id])
-  userId Int @unique
+  latitude  Float
+  store     Store   @relation(fields: [storeId], references: [id])
+  storeId   Int     @unique
 }
 
 model PaymentMethods {
-  id Int @default(autoincrement()) @id
-  card Boolean @default(false)
-  paypal CustomerID?
-  cash Boolean @default(true)
-  Crypto Boolean @default(false)
-  user User @relation(fields:[userId], references: [id])
-  userId Int @unique
+  id          Int         @default(autoincrement()) @id
+  card        Boolean     @default(false)
+  paypal      CustomerID?
+  cash        Boolean     @default(true)
+  crypto      Boolean     @default(false)
+  user        User        @relation(fields: [userId], references: [id])
+  userId      Int         @unique
 }
 
 model CustomerID {
-  id Int @default(autoincrement()) @id
-  CustomerId String @unique
-  paymentMethod PaymentMethods @relation(fields:[paymentMethodkey], references: [id])
-  paymentMethodkey Int @unique
+  id                Int           @default(autoincrement()) @id
+  customerId        String        @unique
+  paymentMethod     PaymentMethods @relation(fields: [paymentMethodKey], references: [id])
+  paymentMethodKey  Int           @unique
   paymentMethodId PaymentMethodID?
 }
 
 model PaymentMethodID {
-  id Int @default(autoincrement()) @id
-  PaymentMethodId String @unique
-  customerId CustomerID @relation(fields: [customerKey], references: [id])
-  customerKey Int @unique
+  id           Int          @default(autoincrement()) @id
+  paymentMethodId String    @unique
+  customerId   CustomerID   @relation(fields: [customerKey], references: [id])
+  customerKey  Int          @unique
+}
+
+model Store {
+  id           Int             @default(autoincrement()) @id
+  user         User            @relation(fields: [userId], references: [id])
+  userId       Int
+  name         String
+  logo         String
+  about        String
+  location     Location?
+  vegetables   PostedVegetables[]
+  fruits       PostedFruit[]
+  herbs        PostedHerbs[]
+  sales        Sales[]
+  orders       Orders[]
 }
 
 model PostedVegetables {
-    id Int @default(autoincrement()) @id
-    Seller User @relation(fields:[userId], references: [id])
-    userId Int
-    name String
-    price Int
-    amount Int
-    // dateTransplanted DateTime
-    // // Run algroithom to determine estimated harvest date or have option to be set up user
-    // estimatedHarvestDate DateTime
-    // HarvestDate DateTime?
+  id       Int    @default(autoincrement()) @id
+  store    Store  @relation(fields: [storeId], references: [id])
+  storeId  Int
+  name     String
+  price    Int
+  amount   Int
 }
 
 model PostedFruit {
-  id Int @default(autoincrement()) @id
-    Seller User @relation(fields:[userId], references: [id])
-    userId Int
-    name String
-    price Float
-    amount Float
-    // dateTransplanted DateTime
-    // // Run algroithom to determine estimated harvest date or have option to be set up user
-    // estimatedHarvestDate DateTime
-    // HarvestDate DateTime?
+  id       Int    @default(autoincrement()) @id
+  store    Store  @relation(fields: [storeId], references: [id])
+  storeId  Int
+  name     String
+  price    Float
+  amount   Float
 }
 
 model PostedHerbs {
-    id Int @default(autoincrement()) @id
-    Seller User @relation(fields:[userId], references: [id])
-    userId Int
-    name String
-    price Int
-    amount Int
-    dried Boolean
-    // dateTransplanted DateTime
-    // // Run algroithom to determine estimated harvest date or have option to be set up user
-    // estimatedHarvestDate DateTime
-    // HarvestDate DateTime?
+  id       Int    @default(autoincrement()) @id
+  store    Store  @relation(fields: [storeId], references: [id])
+  storeId  Int
+  name     String
+  price    Int
+  amount   Int
+  dried    Boolean
+}
+
+model Sales {
+  id        Int      @default(autoincrement()) @id
+  date      String
+  status    String
+  seller    User     @relation("Seller", fields: [sellerId], references: [id])
+  store     Store    @relation(fields: [storeId], references: [id])
+  storeId   Int
+  sellerId  Int
+  total     Int
+  items     Json
 }
 
 model Orders {
-  id Int @default(autoincrement()) @id
-  date String
-  status String
-  Buyer User @relation("Buyer", fields: [buyerId], references: [id])
-  Seller User @relation("Seller", fields: [sellerId], references: [id])
-  channelId String @unique
-  buyerId Int @unique
-  sellerId Int @unique
-  total Int 
-  Items Json
+  id         Int      @default(autoincrement()) @id
+  date       String
+  status     String
+  buyer      User     @relation("Buyer", fields: [buyerId], references: [id])
+  store      Store    @relation(fields: [storeId], references: [id])
+  storeId    Int
+  buyerId    Int
+  total      Int
+  items      Json
 }
